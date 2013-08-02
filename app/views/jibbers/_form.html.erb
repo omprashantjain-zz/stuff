@@ -1,0 +1,31 @@
+<h1>Jibber Jabber Page</h1>
+<%= form_for(@jibber) do |f| %>
+  <% if @jibber.errors.any? %>
+    <div id="error_explanation">
+      <h2> <%= pluralize(@jibber.errors.count, "error") %>
+        prohibited this jibber from being happening</h2>
+        <ul><font color="red">
+          <% @jibber.errors.full_messages.each do |msg| %>
+          <l1><%=msg %></li><br />
+          <%end%>
+          </font>
+       </ul>
+    </div>
+  <%end%>
+
+  <table>
+    <tr>
+      <th><%= f.label :Jibber %></th>
+      <th><%= f.text_field :text %></th>
+    </tr>
+    <tr>
+      <th><%= f.label :type %></th>
+      <th><%= f.text_field :jtype %></th>
+    </tr>
+    <tr>
+      <th><%= f.submit %>
+    </tr>
+  </table>
+<%end%>
+
+

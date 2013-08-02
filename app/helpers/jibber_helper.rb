@@ -1,0 +1,2 @@
+module JibberHelper
+end

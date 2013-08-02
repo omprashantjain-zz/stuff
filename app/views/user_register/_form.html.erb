@@ -1,0 +1,38 @@
+<span id="register_caption"> Register Here</span> 
+
+<span id="link_to_login"> <%= link_to "Back to Login", new_user_session_path %></span>
+
+<%= form_for(@user , {:url => user_register_index_path, :method => :post, :html => {:multipart => true}}) do |f| %>
+    
+      <%= f.text_field :firstname , :placeholder => "First Name"%> 
+      <span class="error"><%= @user.errors[:firstname].first if @user.errors.any? && @user.errors[:firstname] %></span>
+    
+      <br/><%= f.text_field :lastname , :placeholder => "Last Name"%> 
+      <span class="error"><%= @user.errors[:lastname].first if @user.errors.any? && @user.errors[:lastname] %></span>
+    
+      <br/><%= f.text_field :username , :placeholder => "User Name"%>
+      <span class="error"><%= @user.errors[:username].first if @user.errors.any? && @user.errors[:username] %></span>
+    
+      <br/><%= f.password_field :password , :placeholder => "Password"%>
+      <span class="error"><%= @user.errors[:password].first if @user.errors.any? && @user.errors[:password] %></span>
+    
+      <br/><%= f.password_field :password_confirmation , :placeholder => "Confirm Password"%>
+      <span class="error"><%= @user.errors[:password_confirmation].first if @user.errors.any? && @user.errors[:password_confirmation] %></span>
+    
+      <br/><%= f.telephone_field :phone , :placeholder => "Phone Number"%>
+      <span class="error"><%= @user.errors[:phone].first if @user.errors.any? && @user.errors[:phone] %></span>
+    
+      <br/><%= f.text_field :email , :placeholder => "E-Mail"%>
+      <span class="error"><%= @user.errors[:email].first if @user.errors.any? && @user.errors[:email] %></span>
+       
+      <br/> &nbsp; <%= f.label :DOB %>  <%= f.date_select(:dob,:start_year => 1900) %>
+      <span class="error"><%= @user.errors[:DOB].first if @user.errors.any? && @user.errors[:DOB] %></span>
+      
+      <%= f.file_field :image %>
+      <span class="error"><%= @user.errors[:image].first if @user.errors.any? && @user.errors[:image] %></span>
+    
+      <br/><span id="register_button"><%= f.submit :value => "Register"%></span>
+     
+<% end %>
+
+
