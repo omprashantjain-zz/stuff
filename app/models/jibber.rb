@@ -18,5 +18,5 @@ class Jibber < ActiveRecord::Base
       errors.add(:text,"similar jibber was recently posted") unless (Time.now-temp.updated_at)/60 > 15
     end
   end
-
+  
 end

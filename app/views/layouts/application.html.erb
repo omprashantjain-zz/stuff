@@ -2,59 +2,16 @@
 	<head>
 		<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 		<title>JibberJabber</title>
-		<%= stylesheet_link_tag : application %>
+		<%= stylesheet_link_tag :all %>
 		<%= javascript_include_tag :all %>
 		<%= csrf_meta_tag %>
-<!--	<script type="text/javascript">
-	$(document).ready(function() {
-		 alert("hi");
-    // Define the dateFormat for the datepicker
-    $.datepicker._defaults.dateFormat = 'dd M yy';
-    
-    /**
-     * Sets the date for each select with the date selected with datepicker
-     */
-    $('input.ui-date-text').live("change", function() {
-        var sels = $(this).siblings("select:lt(3)");
-        var d = $.datepicker.parseDate($.datepicker._defaults.dateFormat, $(this).val() );
-        
-        $(sels[0]).val(d.getFullYear());
-        $(sels[1]).val(d.getMonth() + 1);
-        $(sels[2]).val(d.getDate());
-    });
-    
-    /**
-     * Replaces the date or datetime field with jquey-ui datepicker
-     */
-    $('.date, .datetime').each(function(i, el) {
-        var input = document.createElement('input');
-        $(input).attr({'type': 'text', 'class': 'ui-date-text'});
-        // Insert the input:text before the first select
-        $(el).find("select:first").before(input);
-        $(el).find("select:lt(3)").hide();
-        // Set the input with the value of the selects
-        var values = [];
-        $(input).siblings("select:lt(3)").each(function(i, el) {
-            var val = $(el).val();
-            if(val != '')
-                values.push(val);
-        });
-        if( values.length > 1) {
-            d = new Date(values[0], parseInt(values[1]) - 1, values[2]);
-            $(input).val( $.datepicker.formatDate($.datepicker._defaults.dateFormat, d) );
-        }
- 
-        $(input).datepicker();
-    });
-});
-	</script>-->
 		</head>
 	<body >
 		
   <!-- Title bar -->	
 		<div id="title" class="top_to_bottom_gradient" align="left">
 			<div id="title_text_left">Jibber Jabber</div> 
-			<div id="title_text_right">Total User: <%=User.count%>, Jibbers: <%=Jibber.jibbers.count%>, Jabbers: <%=Jibber.jabbers.count%> </div>
+			<div id="title_text_right">Total User: <%=User.count%>, Total Jibbers: <%=Jibber.jibbers.count%>, Total Jabbers: <%=Jibber.jabbers.count%> </div>
 		</div>
 		
   <!-- Main Content -->		 

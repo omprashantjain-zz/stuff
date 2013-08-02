@@ -22,4 +22,9 @@ class UserRegisterController < ApplicationController
       file.write(uploaded_io.read)
     end
   end
+  
+  def show
+    @jibbers=Jibber.all
+    @user = User.find(params[:id])
+  end
 end

@@ -1,0 +1,18 @@
+<div class="user_card">
+	<div id="username">
+		<%= @user.username %>
+	</div>
+	<div id="logout_link">
+		<%= link_to "Sign-out", logout_path%>
+	</div>
+	<div id="user_info">
+		<div id="card_img">
+			<img src="/images/profile/<%=@user.image%>" height=100 width=100 />
+		</div>
+		<div class="card_p">
+			<p >Hi <%= @user.firstname %> <%= @user.lastname %>
+			<br/>Your Total Jibbers : <%= @user.jibbers.where(:jtype => "jibber").length %>
+			<br/>Your Total Jabbers : <%= @user.jibbers.where(:jtype => "jabber").length %></p>
+		</div>  
+	</div>
+</div>

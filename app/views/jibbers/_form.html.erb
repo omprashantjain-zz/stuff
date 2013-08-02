@@ -1,31 +1,20 @@
-<h1>Jibber Jabber Page</h1>
-<%= form_for(@jibber) do |f| %>
-  <% if @jibber.errors.any? %>
-    <div id="error_explanation">
-      <h2> <%= pluralize(@jibber.errors.count, "error") %>
-        prohibited this jibber from being happening</h2>
-        <ul><font color="red">
-          <% @jibber.errors.full_messages.each do |msg| %>
-          <l1><%=msg %></li><br />
-          <%end%>
-          </font>
-       </ul>
-    </div>
-  <%end%>
-
-  <table>
-    <tr>
-      <th><%= f.label :Jibber %></th>
-      <th><%= f.text_field :text %></th>
-    </tr>
-    <tr>
-      <th><%= f.label :type %></th>
-      <th><%= f.text_field :jtype %></th>
-    </tr>
-    <tr>
-      <th><%= f.submit %>
-    </tr>
-  </table>
-<%end%>
+<div class="user_card" id="jibber_card">
+	<div id="new_jibber_text"> Something is on your mind Jibber here </div>
+	<%= form_for(@jibber) do |f| %>
+	
+		<% if @jibber.errors.any? %>
+			<% @jibber.errors.full_messages.each do |msg| %>
+				<error><%=msg %></error><br />
+			<%end%>
+		<%end%>
+	
+		<div id="jibber_box">
+			<%= f.text_area :text, :rows => "5", :cols => "32"%>
+		</div>
+		<div id="jibber_button">
+			<%= f.submit "Jibber"%>
+		</div>
+	<%end%>
 
 
+</div>

@@ -5,6 +5,7 @@ class JibbersController < ApplicationController
 
   def new 
     @jibber=Jibber.new
+    @jibbers=Jibber.all
   end
 
   def create

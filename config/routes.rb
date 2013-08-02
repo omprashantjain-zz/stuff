@@ -5,7 +5,7 @@ JibberJabber::Application.routes.draw do
 
   get "home/index"
   post "user_session/login" ,:to => "user_session#login", :as => "login"
-
+  get "user_session/logout" ,:to => "user_session#logout", :as => "logout"
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

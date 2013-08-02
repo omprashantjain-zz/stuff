@@ -5,7 +5,7 @@
 <%= render :partial => "jibbers/jibbers"%>
 </div>
 
-<div id="login">
+<div class="user_card">
 <%= form_for(@user , :url => login_path) do |f| %>
   <span class="error"><%=  flash[:notice] if flash[:notice] %></span>
 
