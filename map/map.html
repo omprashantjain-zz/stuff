@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Reverse Geocoding</title>
+    <link rel="stylesheet" type="text/css" href="map.css" media="screen" />
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script src="jquery-2.0.2.min.js"></script>
+    <script src="map.js"></script>
+  </head>
+  <body>
+    <div id="panel">
+      <input id="latlng" type="text">
+      <input id="get-result" type="button" value="Get me this Address...">
+    </div>
+    <div id="result">
+	  <h3>This is your address</h3>
+      <textarea id="result-area" row="10" col="100"></textarea>
+    </div>
+  </body>
+</html>
