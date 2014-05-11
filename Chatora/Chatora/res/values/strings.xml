@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Chatora</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array name="hhi">
+        <item>Upto 3 Lakhs</item>
+        <item>3 to 6 Lakhs</item>
+        <item>More than 6 Lakhs</item>
+    </string-array>
+
+    <string name="display_name">Display Name</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="age_slide">Slide for your age: </string>
+    <string name="age_view">10 Years</string>
+    <string name="annual_income">Annual Income: </string>
+    <string name="sign_in">I am a Chatora..</string>
+    <string name="title_activity_suggestion">Suggestion</string>
+
+</resources>
