@@ -54,7 +54,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
     setContentView(R.layout.activity_main);
     
     lManager = (LocationManager)context.getSystemService(LOCATION_SERVICE);
-    lManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 0, networkListener);
+    lManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 0, networkListener);
     
     layout = (LinearLayout)findViewById(R.id.container);
     Drawable background = layout.getBackground();
