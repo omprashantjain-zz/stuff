@@ -56,9 +56,11 @@ public class MainActivity extends ActionBarActivity {
     lManager = (LocationManager)context.getSystemService(LOCATION_SERVICE);
     lManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 0, networkListener);
  
-    if(persistantData.isFourSquareRegistered() || persistantData.isChatoraRegistered()) {
+    if(persistantData.isFourSquareRegistered()) {
       Intent i = FoursquareOAuth.getConnectIntent(context, Config.CLIENT_ID);
       startActivityForResult(i, Config.REQUEST_CODE_FSQ_CONNECT);
+    } else if (persistantData.isChatoraRegistered()) {
+      getApplicationContext().startActivity(intent);
     }
 	
 	setContentView(R.layout.activity_main);
