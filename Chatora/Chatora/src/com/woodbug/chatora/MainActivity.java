@@ -5,6 +5,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -56,7 +58,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
   Spinner hhi;
   Button signIn;
   Context context;
-  ProgressDialog progDailog;
+  ProgressDialog progDialogPlaces, progDialogProfile;
   LocationManager lManager;
   Location location;
   NetworkLocationListener networkListener = new NetworkLocationListener();
@@ -128,6 +130,16 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
         if(tokenResponse != null && tokenResponse.getException() == null) {
           accessToken = tokenResponse.getAccessToken();
           Log.i("AccessToken", "" + accessToken);
+          Toast.makeText(context, "FourSquare login Successful", Toast.LENGTH_SHORT).show();
+
+          progDialogProfile = new ProgressDialog(this);
+          progDialogProfile.setMessage("Getting your details..");
+          progDialogProfile.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+          progDialogProfile.setCancelable(false);
+          progDialogProfile.setCanceledOnTouchOutside(false);
+          progDialogProfile.show(); 
+          new Profile().execute();
+          
         } else {
           Log.e("AccessTokenResponse", tokenResponse.getException().getMessage() + ":" + accessToken);
         }
@@ -157,13 +169,13 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 //      + ", " + hhi.getSelectedItem().toString()
 //      + ", " + (age.getProgress()+10));
 
-    progDailog = new ProgressDialog(this);
-    progDailog.setMessage("Fetching you the best food around..");
-    progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-    progDailog.setCancelable(false);
-    progDailog.setCanceledOnTouchOutside(false);
-    progDailog.show(); 
-    new NetworkOperation().execute();
+    progDialogPlaces = new ProgressDialog(this);
+    progDialogPlaces.setMessage("Fetching you the best food around..");
+    progDialogPlaces.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+    progDialogPlaces.setCancelable(false);
+    progDialogPlaces.setCanceledOnTouchOutside(false);
+    progDialogPlaces.show(); 
+    new PlacesList().execute();
     
   }
   
@@ -189,7 +201,58 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
       
   }
   
-  private class NetworkOperation extends AsyncTask<Object, Object, Object> {
+  private class Profile extends AsyncTask<Object, JSONObject, JSONObject> {
+
+    boolean nError;
+    StringBuilder path = new StringBuilder(
+      "https://api.foursquare.com/v2/users/self?oauth_token=" + accessToken + "&v=20140519");
+    
+    @Override
+    protected JSONObject doInBackground(Object... params) {
+      JSONObject resultJSON = null,
+                 user       = null;
+      try {
+        HttpClient client     = new DefaultHttpClient();
+        HttpGet get           = new HttpGet(path.toString());
+        HttpResponse response = client.execute(get);
+        String result         = EntityUtils.toString(response.getEntity());
+            
+        //Log.i("NetworkResult", result);
+        resultJSON = new JSONObject(result);
+        user       = resultJSON.getJSONObject("response").getJSONObject("user");
+        
+      } catch (Exception e) {
+        nError = true;
+        Log.e("NetworkOperation::doInBackground",
+        e.getClass().getName() + ":" + e.getMessage());
+        Toast.makeText(getApplicationContext(), "Network error try again..", Toast.LENGTH_LONG).show();
+      }
+      return user;
+    }
+    
+    
+    @Override
+    protected void onPostExecute(JSONObject user) {
+      
+      progDialogProfile.dismiss();
+      if(!nError) {
+        try {
+          displayName.setText(user.getString("firstName") + " " + user.getString("lastName"));
+          if(user.getString("gender").equals("male")) {
+            gender.check(R.id.male);
+          } else {
+            gender.check(R.id.female);
+          }
+        } catch (JSONException e) {
+          Log.e("Profile", e.getClass() + ":" + e.getMessage());
+        }
+      }
+      
+    }  
+    
+  }
+  
+  private class PlacesList extends AsyncTask<Object, Object, Object> {
 
     Intent intent;
     boolean nError;
@@ -227,7 +290,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
     @Override
     protected void onPostExecute(Object nothing) {
       
-      progDailog.dismiss();
+      progDialogPlaces.dismiss();
       if(!nError) {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getApplicationContext().startActivity(intent);
