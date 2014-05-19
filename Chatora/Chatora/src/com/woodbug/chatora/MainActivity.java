@@ -29,10 +29,25 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.foursquare.android.nativeoauth.FoursquareOAuth;
+import com.foursquare.android.nativeoauth.model.AccessTokenResponse;
+import com.foursquare.android.nativeoauth.model.AuthCodeResponse;
 import com.woodbug.chatora.data.PersistantData;
 
 public class MainActivity extends ActionBarActivity implements OnClickListener{
 
+  public static final String
+    CLIENT_ID     = "34SHI3D0MYXRMBENDLBUAX03M5ZD3L1MIMLF0DK0RKVMSWFD",
+    CLIENT_SECRET = "2CGG25UP03QZ4RF425LDYUYYUJZHTSKHDBZ1DC3XJVS1E3LN";
+  
+  public static final int
+    REQUEST_CODE_FSQ_CONNECT        = 777,
+    REQUEST_CODE_FSQ_TOKEN_EXCHANGE = 778;
+  
+  private static String 
+    authCode    = null,
+    accessToken = null;
+  
   LinearLayout layout;
   EditText displayName;
   RadioGroup gender;
@@ -52,6 +67,9 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
     
     context = getApplicationContext();
     setContentView(R.layout.activity_main);
+    
+    Intent intent = FoursquareOAuth.getConnectIntent(context, CLIENT_ID);
+    startActivityForResult(intent, REQUEST_CODE_FSQ_CONNECT);
     
     lManager = (LocationManager)context.getSystemService(LOCATION_SERVICE);
     lManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 0, networkListener);
@@ -87,7 +105,38 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
     });
     
   }
+  
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	
+    switch (requestCode) {
+      
+      case REQUEST_CODE_FSQ_CONNECT:
+        AuthCodeResponse codeResponse = FoursquareOAuth.getAuthCodeFromResult(resultCode, data);        
+        if(codeResponse != null && codeResponse.getException() == null) {
+          authCode = codeResponse.getCode();
+          Intent intent = FoursquareOAuth.getTokenExchangeIntent(context, CLIENT_ID, CLIENT_SECRET, authCode);
+          startActivityForResult(intent, REQUEST_CODE_FSQ_TOKEN_EXCHANGE);
+          Log.i("AuthCode", "" + authCode);
+        } else {
+          Log.e("AuthCodeResponse", codeResponse.getException().getMessage() + ":" + authCode);
+        }
+      break;
+     
+      case REQUEST_CODE_FSQ_TOKEN_EXCHANGE:
+        AccessTokenResponse tokenResponse = FoursquareOAuth.getTokenFromResult(resultCode, data);
+        if(tokenResponse != null && tokenResponse.getException() == null) {
+          accessToken = tokenResponse.getAccessToken();
+          Log.i("AccessToken", "" + accessToken);
+        } else {
+          Log.e("AccessTokenResponse", tokenResponse.getException().getMessage() + ":" + accessToken);
+        }
+        break;
+    }
 
+  }
+  
+  
   @Override
   public void onClick(View v) {
     
@@ -154,7 +203,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
     @Override
     protected Object doInBackground(Object... params) {
       try {
-      path.append(location.getLatitude() + "," + location.getLongitude());
+        path.append(location.getLatitude() + "," + location.getLongitude());
         HttpClient client     = new DefaultHttpClient();
         HttpGet get           = new HttpGet(path.toString());
         HttpResponse response = client.execute(get);
