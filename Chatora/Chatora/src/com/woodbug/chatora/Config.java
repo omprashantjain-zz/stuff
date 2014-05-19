@@ -1,0 +1,13 @@
+package com.woodbug.chatora;
+
+public class Config {
+
+  public static final String
+    CLIENT_ID     = "34SHI3D0MYXRMBENDLBUAX03M5ZD3L1MIMLF0DK0RKVMSWFD",
+    CLIENT_SECRET = "2CGG25UP03QZ4RF425LDYUYYUJZHTSKHDBZ1DC3XJVS1E3LN";
+
+  public static final int
+    REQUEST_CODE_FSQ_CONNECT        = 777,
+    REQUEST_CODE_FSQ_TOKEN_EXCHANGE = 778;
+
+}

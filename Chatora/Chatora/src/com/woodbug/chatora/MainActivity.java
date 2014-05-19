@@ -11,7 +11,6 @@ import org.json.JSONObject;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -22,13 +21,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RadioGroup;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.foursquare.android.nativeoauth.FoursquareOAuth;
@@ -36,74 +28,59 @@ import com.foursquare.android.nativeoauth.model.AccessTokenResponse;
 import com.foursquare.android.nativeoauth.model.AuthCodeResponse;
 import com.woodbug.chatora.data.PersistantData;
 
-public class MainActivity extends ActionBarActivity implements OnClickListener{
+public class MainActivity extends ActionBarActivity {
 
-  public static final String
-    CLIENT_ID     = "34SHI3D0MYXRMBENDLBUAX03M5ZD3L1MIMLF0DK0RKVMSWFD",
-    CLIENT_SECRET = "2CGG25UP03QZ4RF425LDYUYYUJZHTSKHDBZ1DC3XJVS1E3LN";
-  
-  public static final int
-    REQUEST_CODE_FSQ_CONNECT        = 777,
-    REQUEST_CODE_FSQ_TOKEN_EXCHANGE = 778;
-  
   private static String 
     authCode    = null,
     accessToken = null;
-  
-  LinearLayout layout;
-  EditText displayName;
-  RadioGroup gender;
-  SeekBar age;
-  TextView ageView;
-  Spinner hhi;
-  Button signIn;
+	  
+  Button loginFourSquare;
+  Button registerWithChatora;
+  Intent intent;
   Context context;
-  ProgressDialog progDialogPlaces, progDialogProfile;
+  ProgressDialog progDialogProfile;
+  PersistantData persistantData;
   LocationManager lManager;
   Location location;
   NetworkLocationListener networkListener = new NetworkLocationListener();
   
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
     
+	super.onCreate(savedInstanceState);
     context = getApplicationContext();
-    setContentView(R.layout.activity_main);
-    
-    Intent intent = FoursquareOAuth.getConnectIntent(context, CLIENT_ID);
-    startActivityForResult(intent, REQUEST_CODE_FSQ_CONNECT);
+    persistantData = new PersistantData(context);
+    intent = new Intent(context, Register.class);
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     
     lManager = (LocationManager)context.getSystemService(LOCATION_SERVICE);
     lManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 0, networkListener);
-    
-    layout = (LinearLayout)findViewById(R.id.container);
-    Drawable background = layout.getBackground();
-    background.setAlpha(90);
-    
-    displayName = (EditText)findViewById(R.id.display_name);
-    gender      = (RadioGroup)findViewById(R.id.gender);
-    age         = (SeekBar)findViewById(R.id.age_bar);
-    ageView     = (TextView)findViewById(R.id.age_view);
-    hhi         = (Spinner)findViewById(R.id.hhi);
-    signIn      = (Button)findViewById(R.id.signin);
  
-    signIn.setOnClickListener(this);
-    signIn.setEnabled(false);
+    if(persistantData.isFourSquareRegistered() || persistantData.isChatoraRegistered()) {
+      Intent i = FoursquareOAuth.getConnectIntent(context, Config.CLIENT_ID);
+      startActivityForResult(i, Config.REQUEST_CODE_FSQ_CONNECT);
+    }
+	
+	setContentView(R.layout.activity_main);
+
+    loginFourSquare     = (Button)findViewById(R.id.login_four_square);
+    registerWithChatora = (Button)findViewById(R.id.register);
     
-    age.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+    loginFourSquare.setOnClickListener(new OnClickListener() {
     
       @Override
-      public void onStopTrackingTouch(SeekBar seekBar) {}
-    
-      @Override
-      public void onStartTrackingTouch(SeekBar seekBar) {}
-    
-      @Override
-      public void onProgressChanged(SeekBar seekBar, int progress,
-          boolean fromUser) {
-        ageView.setText((progress + 10) + " Years");
+      public void onClick(View v) {
+        Intent i = FoursquareOAuth.getConnectIntent(context, Config.CLIENT_ID);
+    	startActivityForResult(i, Config.REQUEST_CODE_FSQ_CONNECT);   
       }
-      
+    });
+    
+    registerWithChatora.setOnClickListener(new OnClickListener() {
+    
+      @Override
+      public void onClick(View v) {
+        getApplicationContext().startActivity(intent);
+      }
     });
     
   }
@@ -113,22 +90,23 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 	
     switch (requestCode) {
       
-      case REQUEST_CODE_FSQ_CONNECT:
+      case Config.REQUEST_CODE_FSQ_CONNECT:
         AuthCodeResponse codeResponse = FoursquareOAuth.getAuthCodeFromResult(resultCode, data);        
         if(codeResponse != null && codeResponse.getException() == null) {
           authCode = codeResponse.getCode();
-          Intent intent = FoursquareOAuth.getTokenExchangeIntent(context, CLIENT_ID, CLIENT_SECRET, authCode);
-          startActivityForResult(intent, REQUEST_CODE_FSQ_TOKEN_EXCHANGE);
+          Intent i = FoursquareOAuth.getTokenExchangeIntent(context, Config.CLIENT_ID, Config.CLIENT_SECRET, authCode);
+          startActivityForResult(i, Config.REQUEST_CODE_FSQ_TOKEN_EXCHANGE);
           Log.i("AuthCode", "" + authCode);
         } else {
           Log.e("AuthCodeResponse", codeResponse.getException().getMessage() + ":" + authCode);
         }
       break;
      
-      case REQUEST_CODE_FSQ_TOKEN_EXCHANGE:
+      case Config.REQUEST_CODE_FSQ_TOKEN_EXCHANGE:
         AccessTokenResponse tokenResponse = FoursquareOAuth.getTokenFromResult(resultCode, data);
         if(tokenResponse != null && tokenResponse.getException() == null) {
           accessToken = tokenResponse.getAccessToken();
+          persistantData.setFourSquareRegistered();
           Log.i("AccessToken", "" + accessToken);
           Toast.makeText(context, "FourSquare login Successful", Toast.LENGTH_SHORT).show();
 
@@ -147,47 +125,15 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
     }
 
   }
-  
-  
-  @Override
-  public void onClick(View v) {
-    
-    PersistantData persistantData = 
-      new PersistantData(getApplicationContext());
-    
-    persistantData.setDisplayName(displayName.getText().toString());
-    if(gender.getCheckedRadioButtonId() == R.id.male) {
-      persistantData.setGender("Male");
-    } else {
-      persistantData.setGender("Female");
-    }
-    persistantData.setHHI(hhi.getSelectedItem().toString());
-    persistantData.setAge(age.getProgress()+10);
-  
-//    Log.i("Saved info", displayName.getText().toString()
-//      + ", " + (gender.getCheckedRadioButtonId() == R.id.male ? "male" : "female")
-//      + ", " + hhi.getSelectedItem().toString()
-//      + ", " + (age.getProgress()+10));
-
-    progDialogPlaces = new ProgressDialog(this);
-    progDialogPlaces.setMessage("Fetching you the best food around..");
-    progDialogPlaces.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-    progDialogPlaces.setCancelable(false);
-    progDialogPlaces.setCanceledOnTouchOutside(false);
-    progDialogPlaces.show(); 
-    new PlacesList().execute();
-    
-  }
-  
   private class NetworkLocationListener implements 
-      LocationListener {
+    LocationListener {
 
     @Override
     public void onLocationChanged(Location loc) {
       Log.i("Location", loc.getLatitude() + ", " + loc.getLongitude());
       location = loc;
-      signIn.setEnabled(true);
-      lManager.removeUpdates(networkListener);
+      persistantData.setLocation(location.getLatitude() + "," + location.getLongitude());
+      lManager.removeUpdates(networkListener); 
     }
 
     @Override
@@ -198,9 +144,9 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 
     @Override
     public void onProviderDisabled(String provider) {}
-      
-  }
   
+  }
+
   private class Profile extends AsyncTask<Object, JSONObject, JSONObject> {
 
     boolean nError;
@@ -237,12 +183,9 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
       progDialogProfile.dismiss();
       if(!nError) {
         try {
-          displayName.setText(user.getString("firstName") + " " + user.getString("lastName"));
-          if(user.getString("gender").equals("male")) {
-            gender.check(R.id.male);
-          } else {
-            gender.check(R.id.female);
-          }
+          persistantData.setDisplayName(user.getString("firstName") + " " + user.getString("lastName"));
+          persistantData.setGender(user.getString("gender"));
+          getApplicationContext().startActivity(intent);    
         } catch (JSONException e) {
           Log.e("Profile", e.getClass() + ":" + e.getMessage());
         }
@@ -251,53 +194,4 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
     }  
     
   }
-  
-  private class PlacesList extends AsyncTask<Object, Object, Object> {
-
-    Intent intent;
-    boolean nError;
-    StringBuilder path = new StringBuilder(
-      "https://api.foursquare.com/v2/venues/search?client_id"
-      + "=34SHI3D0MYXRMBENDLBUAX03M5ZD3L1MIMLF0DK0RKVMSWFD&"
-      + "client_secret=2CGG25UP03QZ4RF425LDYUYYUJZHTSKHDBZ1DC3X"
-      + "JVS1E3LN&v=20140511&ll=");
-
-    
-    @Override
-    protected Object doInBackground(Object... params) {
-      try {
-        path.append(location.getLatitude() + "," + location.getLongitude());
-        HttpClient client     = new DefaultHttpClient();
-        HttpGet get           = new HttpGet(path.toString());
-        HttpResponse response = client.execute(get);
-        String result         = EntityUtils.toString(response.getEntity());
-            
-        intent = new Intent(context, Suggestion.class);
-        intent.putExtra("status", response.getStatusLine().getStatusCode());
-        intent.putExtra("result", result);
-        //Log.i("NetworkResult", result);
-            
-      } catch (Exception e) {
-        nError = true;
-        Log.e("NetworkOperation::doInBackground",
-        e.getClass().getName() + ":" + e.getMessage());
-        Toast.makeText(getApplicationContext(), "Network error try again..", Toast.LENGTH_LONG).show();
-      }
-      return null;
-    }
-    
-    
-    @Override
-    protected void onPostExecute(Object nothing) {
-      
-      progDialogPlaces.dismiss();
-      if(!nError) {
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        getApplicationContext().startActivity(intent);
-      }
-      
-    }  
-    
-  }
-
 }

@@ -7,11 +7,14 @@ public class PersistantData {
 
   SharedPreferences pref;
   final String
-    PREFS_NAME       = "chatora",
-    DISPLAY_NAME     = "display_name",
-    GENDER           = "gender",
-    AGE              = "age",
-    HOUSEHOLD_INCOME = "household_income";
+    PREFS_NAME             = "chatora",
+    DISPLAY_NAME           = "display_name",
+    GENDER                 = "gender",
+    AGE                    = "age",
+    HOUSEHOLD_INCOME       = "household_income",
+    FOUR_SQUARE_REGISTERED = "four_square_registered",
+    CHATORA_REGISTERED     = "chatora_registered",
+    LOCATION               = "location";
 
   public PersistantData(Context context) {
     pref = context.getSharedPreferences(PREFS_NAME, 0);
@@ -22,7 +25,7 @@ public class PersistantData {
   }
   
   public String getDisplayName() {
-    return pref.getString(DISPLAY_NAME, "Guest");
+    return pref.getString(DISPLAY_NAME, null);
   }
 
   public void setGender(String gender) {
@@ -47,6 +50,30 @@ public class PersistantData {
   
   public String getHHI() {
     return pref.getString(HOUSEHOLD_INCOME, "other");
+  }
+
+  public void setFourSquareRegistered() {
+    pref.edit().putBoolean(FOUR_SQUARE_REGISTERED, true).commit();
+  }
+  
+  public boolean isFourSquareRegistered() {
+    return pref.getBoolean(FOUR_SQUARE_REGISTERED, false);
+  }
+
+  public void setChatoraRegistered() {
+    pref.edit().putBoolean(CHATORA_REGISTERED, true).commit();
+  }
+  
+  public boolean isChatoraRegistered() {
+    return pref.getBoolean(CHATORA_REGISTERED, false);
+  }
+  
+  public void setLocation(String location) {
+    pref.edit().putString(LOCATION, location).commit();
+  }
+  
+  public String getLoation() {
+    return pref.getString(LOCATION, null);
   }
   
 }

@@ -8,7 +8,7 @@
     android:paddingRight="5dp"
     android:paddingLeft="5dp"
     android:screenOrientation="portrait"
-    tools:context="com.woodbug.chatora.MainActivity"
+    tools:context="com.woodbug.chatora.Register"
     tools:ignore="MergeRootFrame" >
 
     <TextView

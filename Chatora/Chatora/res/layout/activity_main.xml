@@ -1,117 +1,45 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
     android:orientation="vertical"
-    android:padding="20dp"
-    android:screenOrientation="portrait"
     tools:context="com.woodbug.chatora.MainActivity"
     tools:ignore="MergeRootFrame" >
 
-    <EditText
-        android:id="@+id/display_name"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/textViewEmpty"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:ems="10"
-        android:hint="@string/display_name"
-        android:inputType="textPersonName" >
-
-        <requestFocus />
-    </EditText>
-
-    <RadioGroup
-        android:id="@+id/gender"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="25dp"
-        android:orientation="horizontal" >
-
-        <RadioButton
-            android:id="@+id/male"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="15dp"
-            android:layout_weight="1"
-            android:checked="true"
-            android:text="@string/male" />
-
-        <RadioButton
-            android:id="@+id/female"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/female" />
-
-    </RadioGroup>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/age_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:text="@string/age_slide"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/age_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/age_view"
-            android:textSize="20sp" />
-        
-    </LinearLayout>
-
-    <SeekBar
-        android:id="@+id/age_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:max="50" />
-   
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_height="wrap_content" >
-    
-        <TextView
-            android:id="@+id/hhi_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:text="@string/annual_income"
-            android:textSize="20sp" />
-        
-        <Spinner
-            android:id="@+id/hhi"
-            android:layout_width="match_parent"
-            android:layout_weight="5"
-            android:layout_height="wrap_content"
-            android:drawSelectorOnTop="true"
-            android:entries="@array/hhi" />
-    
-    </LinearLayout>
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
 
     <Button
-        android:id="@+id/signin"
-        android:layout_width="fill_parent"
+        android:id="@+id/login_four_square"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
-        android:layout_marginLeft="15dip"
-        android:layout_marginRight="15dip"
-        android:text="@string/sign_in" />
+        android:minHeight="75dp"
+        android:minWidth="100dp"
+        android:text="@string/login_four_square"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_above="@+id/textViewEmpty"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp" />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/register"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="75dp"
+        android:minWidth="100dp"
+        android:text="@string/register"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_below="@+id/textViewEmpty"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp" />
+    
+</RelativeLayout>
