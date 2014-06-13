@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:padding="20dp"
     android:screenOrientation="portrait"
-    tools:context="com.woodbug.chatora.Register"
+    tools:context="com.woodbug.chatora.RegisterActivity"
     tools:ignore="MergeRootFrame" >
 
     <EditText

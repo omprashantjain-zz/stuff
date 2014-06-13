@@ -11,14 +11,13 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.woodbug.chatora.data.PersistantData;
 
-public class Suggestion extends ActionBarActivity {
+public class SuggestionActivity extends ActionBarActivity {
 
   TextView welcome;
   ListView restaurantList;
@@ -43,23 +42,19 @@ public class Suggestion extends ActionBarActivity {
     if(intent.getIntExtra("status", 0) == 200) {
       try {
     	  
-        ArrayList<String> restaurants = new ArrayList<String>();
+        ArrayList<Venue> restaurants = new ArrayList<Venue>();
         JSONObject result = new JSONObject(intent.getStringExtra("result"));
         //Log.i("response", "" + result.getJSONObject("response"));
-        //Log.i("response", "" + result.getJSONObject("response").getJSONArray("venues"));
+        Log.i("response", "" + result.getJSONObject("response").getJSONArray("venues"));
         JSONArray venues = result.getJSONObject("response").getJSONArray("venues");
         
-        Log.i("size", "" + venues.length());
+        //Log.i("size", "" + venues.length());
         for(int i = 0; i < venues.length(); i++) {
-          StringBuilder ven = new StringBuilder();
-          JSONObject venue = venues.getJSONObject(i);
-          ven.append(venue.getString("name") + " is " + venue.getJSONObject("location").getInt("distance") + " meters far.\n");
-          restaurants.add(ven.toString());
+          Venue venue = new Venue(venues.getJSONObject(i));
+          restaurants.add(venue);
         }
         
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-          (getApplicationContext(), android.R.layout.simple_list_item_1, 
-            restaurants);
+        RestaurantAdapter adapter = new RestaurantAdapter(this, restaurants);
         restaurantList.setAdapter(adapter);
       
       } catch(JSONException e) {

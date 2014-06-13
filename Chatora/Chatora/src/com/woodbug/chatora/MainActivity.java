@@ -50,7 +50,7 @@ public class MainActivity extends ActionBarActivity {
 	super.onCreate(savedInstanceState);
     context = getApplicationContext();
     persistantData = new PersistantData(context);
-    intent = new Intent(context, Register.class);
+    intent = new Intent(context, RegisterActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     
     lManager = (LocationManager)context.getSystemService(LOCATION_SERVICE);

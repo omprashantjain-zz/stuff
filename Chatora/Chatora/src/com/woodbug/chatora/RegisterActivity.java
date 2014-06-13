@@ -28,7 +28,7 @@ import android.widget.Toast;
 
 import com.woodbug.chatora.data.PersistantData;
 
-public class Register extends ActionBarActivity implements OnClickListener{
+public class RegisterActivity extends ActionBarActivity implements OnClickListener{
 
   LinearLayout layout;
   EditText displayName;
@@ -142,7 +142,7 @@ public class Register extends ActionBarActivity implements OnClickListener{
         HttpResponse response = client.execute(get);
         String result         = EntityUtils.toString(response.getEntity());
             
-        intent = new Intent(context, Suggestion.class);
+        intent = new Intent(context, SuggestionActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("status", response.getStatusLine().getStatusCode());
         intent.putExtra("result", result);
