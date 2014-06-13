@@ -10,12 +10,14 @@ public class Venue {
   private String peopleHere;
   private String name;
   private String category;
+  private String uniqueId;
 
   public Venue(JSONObject venue) {
     try {
       this.name       = venue.getString("name");
       this.distance   = venue.getJSONObject("location").getInt("distance");
       this.peopleHere = venue.getJSONObject("hereNow").getString("summary");
+      this.uniqueId   = venue.getString("id");
       
       StringBuilder sb = new StringBuilder();
       JSONArray categories = venue.getJSONArray("categories");
@@ -44,6 +46,10 @@ public class Venue {
 
   public String getCategory() {
     return category;
+  }
+  
+  public String getUniqueId() {
+    return uniqueId;
   }
   
 }

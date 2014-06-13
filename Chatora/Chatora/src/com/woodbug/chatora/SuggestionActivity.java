@@ -11,6 +11,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -56,6 +59,18 @@ public class SuggestionActivity extends ActionBarActivity {
         
         RestaurantAdapter adapter = new RestaurantAdapter(this, restaurants);
         restaurantList.setAdapter(adapter);
+        restaurantList.setOnItemClickListener(new OnItemClickListener() {
+          @Override
+          public void onItemClick(AdapterView<?> parent, View view,
+            int position, long id) {
+        	  Intent intent = new Intent(getApplicationContext(), VenueActivity.class);
+              Bundle bundle = new Bundle();
+              Venue venue   = (Venue)restaurantList.getItemAtPosition(position);
+              bundle.putString("uniqueId", venue.getUniqueId());
+              intent.putExtras(bundle);
+              startActivity(intent);
+          }
+        });
       
       } catch(JSONException e) {
         Log.e("JSONException", e.getMessage());

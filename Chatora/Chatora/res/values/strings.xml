@@ -22,5 +22,6 @@
     <string name="sign_in">I am a Chatora..</string>
     <string name="title_activity_suggestion">Suggestion</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_venue">VenueActivity</string>
 
 </resources>
