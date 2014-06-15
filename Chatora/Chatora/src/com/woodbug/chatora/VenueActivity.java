@@ -18,10 +18,7 @@ import android.widget.Toast;
 
 public class VenueActivity extends ActionBarActivity {
 
-  TextView name, location, stats, category,
-    verified, hereNow, contact, special, hours, price,
-    rating, beenHere, likes, like, dislike;
-
+  TextView result;
   Context context;
   ProgressDialog progDialogVenue;
   String venueId;
@@ -31,21 +28,7 @@ public class VenueActivity extends ActionBarActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_venue);
         
-    name     = (TextView)findViewById(R.id.name);
-    location = (TextView)findViewById(R.id.location);
-    stats    = (TextView)findViewById(R.id.stats);
-    category = (TextView)findViewById(R.id.category);
-    verified = (TextView)findViewById(R.id.verified);
-    hereNow  = (TextView)findViewById(R.id.hereNow);
-    contact  = (TextView)findViewById(R.id.contact);
-    special  = (TextView)findViewById(R.id.special);
-    hours    = (TextView)findViewById(R.id.hours);
-    price    = (TextView)findViewById(R.id.price);
-    rating   = (TextView)findViewById(R.id.rating);
-    beenHere = (TextView)findViewById(R.id.beenHere);
-    likes    = (TextView)findViewById(R.id.likes);
-    like     = (TextView)findViewById(R.id.like);
-    dislike  = (TextView)findViewById(R.id.dislike);
+    result     = (TextView)findViewById(R.id.name);
     
     venueId = getIntent().getExtras().getString("uniqueId");
     
@@ -94,10 +77,35 @@ public class VenueActivity extends ActionBarActivity {
         
       progDialogVenue.dismiss();
       if(!nError) {
-        name.setText(cVenue.getName());
+        StringBuilder sb = new StringBuilder();
+        if(cVenue.getName() != null)
+          sb.append("Name: " + cVenue.getName());
+        if(cVenue.getLocation() != null)
+          sb.append("\n" + "Location: " + cVenue.getLocation());
+        if(cVenue.getCheckins() != null)
+          sb.append("\n" + "Checkins: " + cVenue.getCheckins());
+        sb.append("\n" + (cVenue.getVerified() ? "This place is verified" : "This place is not verified"));
+        if(cVenue.getHereNow() != null)
+          sb.append("\n" + "Here now: " + cVenue.getHereNow());
+        if(cVenue.getContact() != null)
+          sb.append("\n" + "Phone: " + cVenue.getContact());
+        if(cVenue.getSpecial() != null)
+          sb.append("\n" + "Specials: " + cVenue.getSpecial());
+        if(cVenue.getHours() != null)
+          sb.append("\n" + "Timing: " + cVenue.getHours());
+        if(cVenue.getPrice() != null)
+          sb.append("\n" + "Price: " + cVenue.getPrice());
+        if(cVenue.getRating() != null)
+          sb.append("\n" + "Ratings: " + cVenue.getRating());
+        if(cVenue.getBeenHere() != null)
+          sb.append("\n" + "BeenHere: " + cVenue.getBeenHere());
+        if(cVenue.getLikes() != null)
+          sb.append("\n" + "Likes: " + cVenue.getLikes());
+        sb.append("\n" + (cVenue.getDislike() ? "You dislike this Place" : "You don't dislike this place"));
+        result.setText(sb.toString());
       }
         
-    }  
+    }
       
   }
 
