@@ -42,6 +42,13 @@
             android:name="com.woodbug.chatora.VenueActivity"
             android:label="@string/title_activity_venue" >
         </activity>
+        
+        <receiver android:name="EventReciever">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
+        
     </application>
 
 </manifest>

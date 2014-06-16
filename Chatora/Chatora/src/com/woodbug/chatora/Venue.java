@@ -51,5 +51,10 @@ public class Venue {
   public String getUniqueId() {
     return uniqueId;
   }
+
+  public String getNotificationText() {
+    return getName() + " is " + getDistance() + " from you" 
+      + "\n This is " + getCategory() + " and currently ";
+  }
   
 }

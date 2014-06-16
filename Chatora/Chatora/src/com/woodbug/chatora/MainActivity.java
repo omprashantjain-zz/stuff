@@ -49,6 +49,7 @@ public class MainActivity extends ActionBarActivity {
     
 	super.onCreate(savedInstanceState);
     context = getApplicationContext();
+	GlobalApp.init(context);
     persistantData = new PersistantData(context);
     intent = new Intent(context, RegisterActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

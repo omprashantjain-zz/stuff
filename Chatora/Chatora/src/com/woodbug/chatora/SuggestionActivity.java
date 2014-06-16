@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -63,12 +64,9 @@ public class SuggestionActivity extends ActionBarActivity {
           @Override
           public void onItemClick(AdapterView<?> parent, View view,
             int position, long id) {
-        	  Intent intent = new Intent(getApplicationContext(), VenueActivity.class);
-              Bundle bundle = new Bundle();
-              Venue venue   = (Venue)restaurantList.getItemAtPosition(position);
-              bundle.putString("uniqueId", venue.getUniqueId());
-              intent.putExtras(bundle);
-              startActivity(intent);
+            Intent intent = SuggestionActivity.fetchDetailsIntent
+              (getApplicationContext(), (Venue)restaurantList.getItemAtPosition(position));
+            startActivity(intent);
           }
         });
       
@@ -79,6 +77,14 @@ public class SuggestionActivity extends ActionBarActivity {
     } else {
       finish();
     }
+  }
+
+  public static Intent fetchDetailsIntent(Context context, Venue venue) {
+    Intent intent = new Intent(context, VenueActivity.class);
+    Bundle bundle = new Bundle();
+    bundle.putString("uniqueId", venue.getUniqueId());
+    intent.putExtras(bundle);
+    return intent;
   }
   
   @Override

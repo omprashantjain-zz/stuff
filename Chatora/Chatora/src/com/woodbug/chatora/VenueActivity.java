@@ -101,7 +101,7 @@ public class VenueActivity extends ActionBarActivity {
           sb.append("\n" + "BeenHere: " + cVenue.getBeenHere());
         if(cVenue.getLikes() != null)
           sb.append("\n" + "Likes: " + cVenue.getLikes());
-        sb.append("\n" + (cVenue.getDislike() ? "You dislike this Place" : "You don't dislike this place"));
+        if(cVenue.getDislike()) sb.append("\n" + "You dislike this Place");
         result.setText(sb.toString());
       }
         
