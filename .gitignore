@@ -2,3 +2,5 @@ Chatora/appcompat_v7
 .metadata
 Chatora/Chatora/gen
 Chatora/Chatora/.settings
+bin
+!Chatora/MubbleTest/bin/Chatora.apk

@@ -2,6 +2,8 @@ package in.mubble.mubbletest;
 
 import java.lang.reflect.Method;
 
+import android.util.Log;
+
 public class ReflectionDump {
 
   public static void testForSingleSim(Object object) {
@@ -38,36 +40,42 @@ public class ReflectionDump {
     parameter[0] = int.class;
     Object obPhone;
     Object[] obParameter = new Object[1];
-    Class<?> clazz;
     
     for(Method m: methods) {
       String methodName = m.getName();
-      try {    
-        Method gemini = object.getClass()
-          .getMethod(methodName + "Gemini", parameter);
-      
+      try {
+        Method gemini;
+    	try {
+          gemini = object.getClass()
+            .getMethod(methodName + "Gemini", parameter);
+    	} catch (NoSuchMethodException e) {
+          sb.append("\nError " + e.getMessage());
+    	  gemini =  object.getClass()
+            .getMethod(methodName, parameter);	
+    	}
+    	
         obParameter[0] = 0;
         obPhone = gemini.invoke(object, obParameter);
-        clazz = obPhone.getClass();    
         if(obPhone != null) {
-          sb.append("\n" + clazz.getName() + "." + m.getName() + " with argument 0" + ":" 
+          sb.append("\n" +  m.getName() + " with argument 0" + ":" 
             + (obPhone == null ? "null" : obPhone.toString())); 
         }
       
         obParameter[0] = 1;
         obPhone = gemini.invoke(object, obParameter);
-        clazz = obPhone.getClass();    
         if(obPhone != null) {
-          sb.append("\n" + clazz.getName() + "." + m.getName() + " with argument 1" + ":" 
+          sb.append("\n" + m.getName() + " with argument 1" + ":" 
             + (obPhone == null ? "null" : obPhone.toString()));  
         }
     
       } catch (Exception e) {
-        //e.printStackTrace();
+        e.printStackTrace();
+        sb.append("\nError " + e.getMessage());
         //throw new GeminiMethodNotFoundException("hello");
       }
       
     }
+    Log.i("Reached end", "aha");
     MubbleUtil.writeToFile("DualSim.txt", sb.toString());
   }
 }
