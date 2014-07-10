@@ -5,23 +5,22 @@ import in.mubble.callsmstojson.R;
 import org.json.JSONArray;
 
 import android.annotation.TargetApi;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
+
+import com.google.gson.Gson;
 
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 public class MainActivity extends ActionBarActivity {
 
   public static Context context;
   Button start, stop;
+  TextView text;
   
   public static JSONArray allData = new JSONArray();
   
@@ -30,7 +29,56 @@ public class MainActivity extends ActionBarActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     context = getApplicationContext();
+    
+    GSONTest test = new GSONTest("hahaha");
+    Gson gson     = new Gson();
 
+    String json     = gson.toJson(test);
+    Log.e("json", json);
+    GSONTest result = gson.fromJson(json, GSONTest.class);
+    Log.e("result", result.toString());
+  
+  }
+}
+
+
+/* text = (TextView) findViewById(R.id.textView1);
+ StringBuilder sb = new StringBuilder("DualSimGuru\n");
+ 
+ sb.append("\nSimSerialNumber1: " + DualSimGuru.getSerialSim1());
+ sb.append("\nSimSerialNumber2: " + DualSimGuru.getSerialSim2());
+ sb.append("\nSimNetwork1: "      + DualSimGuru.getNetworkSim1());
+ sb.append("\nSimNetwork2: "      + DualSimGuru.getNetworkSim2());
+ sb.append("\nSimOperator1: "     + DualSimGuru.getOperatorSim1());
+ sb.append("\nSimOperator2: "     + DualSimGuru.getOperatorSim2());
+ sb.append("\nDataActiveInSim: "     + DualSimGuru.getDataActiveSimId());
+ 
+ text.setText(sb.toString());
+ 
+ try {
+   Class<?> clazz = ClassLoader.getSystemClassLoader().loadClass("android.provider.Telephony.SIMInfo");
+   ReflectionDump.testForSingleSim(clazz.newInstance());
+   ReflectionDump.testForDualSim(clazz.newInstance());
+   
+ } catch (ClassNotFoundException e) {
+   Log.e("Exception", e.getMessage());
+   e.printStackTrace();
+ } catch (InstantiationException e) {
+   Log.e("Exception", e.getMessage());
+   e.printStackTrace();
+ } catch (IllegalAccessException e) {
+   Log.e("Exception", e.getMessage());
+   e.printStackTrace();
+ }*/
+
+
+
+  /*    
+    TelephonyManager tm = (TelephonyManager)getApplicationContext()
+          .getSystemService(Context.TELEPHONY_SERVICE);
+    ReflectionDump.testForSingleSim(tm);
+    ReflectionDump.testForDualSim(tm);
+    
     start = (Button)findViewById(R.id.button1);
     stop  = (Button)findViewById(R.id.button2);
     
@@ -50,8 +98,7 @@ public class MainActivity extends ActionBarActivity {
         MubbleUtil.writeToFile("AppWiseDataUsed.txt", allData.toString());
       }
     });
-  }
-
+    
   public void startMonitorDataUsage() {
     
     AlarmManager am = (AlarmManager)
@@ -77,13 +124,7 @@ public class MainActivity extends ActionBarActivity {
     am.cancel(pIntent);
       
   }
-}  
-
-  
-  
-  
-  /*
-     
+    
     String encodedHash = Uri.encode("#");
     String ussd = "*121" + encodedHash;
     Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + ussd));

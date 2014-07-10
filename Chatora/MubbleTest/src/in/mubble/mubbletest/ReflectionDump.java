@@ -49,7 +49,7 @@ public class ReflectionDump {
           gemini = object.getClass()
             .getMethod(methodName + "Gemini", parameter);
     	} catch (NoSuchMethodException e) {
-          sb.append("\nError " + e.getMessage());
+          //sb.append("\nError " + e.getMessage());
     	  gemini =  object.getClass()
             .getMethod(methodName, parameter);	
     	}
@@ -70,7 +70,7 @@ public class ReflectionDump {
     
       } catch (Exception e) {
         e.printStackTrace();
-        sb.append("\nError " + e.getMessage());
+        //sb.append("\nError " + e.getMessage());
         //throw new GeminiMethodNotFoundException("hello");
       }
       
