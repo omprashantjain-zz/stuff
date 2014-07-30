@@ -6,11 +6,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,11 +22,18 @@ import android.widget.TextView;
 
 import com.woodbug.chatora.data.PersistantData;
 
-public class SuggestionActivity extends ActionBarActivity {
+public class SuggestionActivity extends Activity {
 
   TextView welcome;
   ListView restaurantList;
   LinearLayout layout;
+
+  float psychographicFactor_X,
+        demoGraphicScore,
+        collaborativeScore,
+        netScore,
+        finalRecommendationScore,
+        scaledAdjustmentFactor;
   
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -94,5 +102,47 @@ public class SuggestionActivity extends ActionBarActivity {
     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     startActivity(i);
   }
+  
+  public void calculateFinalRecommendationScore() {
+	psychographicFactor_X = calculatePsychographicFactor(); 
+	demoGraphicScore      = calculateDemoGraphicScore();
+	collaborativeScore    = calculateCollaborativeScore();
+  
+    netScore                 = (psychographicFactor_X * collaborativeScore) + (1-psychographicFactor_X) * demoGraphicScore;
+    scaledAdjustmentFactor   = netScore / 10;
+    finalRecommendationScore = 50 * scaledAdjustmentFactor;
+  }
+  
+  private float calculatePsychographicFactor() {
+    
+    SharedPreferences channel = GlobalApp.context.getSharedPreferences("Chatora", Context.MODE_PRIVATE);
+    float noOfCalls          = channel.getFloat("noOfCalls", 0),
+          screenUsageMinutes = channel.getFloat("screenUsageMinutes", 0),
+          mobileInternetMB   = channel.getFloat("mobileInternetMB", 0),
+          messagePerDay      = channel.getFloat("messagePerDay", 0);
+    
+    return (noOfCalls / 10) + (screenUsageMinutes / 180) + (mobileInternetMB / 512) + (messagePerDay / 15);
+  }
 
+  private float calculateDemoGraphicScore() {
+    
+    SharedPreferences channel = GlobalApp.context.getSharedPreferences("Chatora", Context.MODE_PRIVATE);
+    float hHI        = channel.getFloat("hHI", 0),
+          age        = channel.getFloat("age", 0),
+          checkinVal = channel.getFloat("checkinVal", 0),
+          likeVal    = channel.getFloat("likeVal", 0),
+          genderVal  = channel.getFloat("genderVal", 0);
+    
+    return (hHI / 5) + (25 / age) + checkinVal + likeVal + genderVal;
+  }
+  
+  private float calculateCollaborativeScore() {
+    
+    SharedPreferences channel = GlobalApp.context.getSharedPreferences("Chatora", Context.MODE_PRIVATE);
+    float communityRating = channel.getFloat("communityRating", 0),
+          noOfCheckin     = channel.getFloat("noOfCheckin", 0);
+    
+    return (communityRating / 10) + (noOfCheckin / 100) * 5;
+  }
+  
 }

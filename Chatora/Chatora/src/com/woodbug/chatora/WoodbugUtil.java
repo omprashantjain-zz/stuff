@@ -8,10 +8,10 @@ package com.woodbug.chatora;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v7.widget.GridLayout;
-import android.support.v7.widget.GridLayout.Spec;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.widget.GridLayout;
+import android.widget.GridLayout.Spec;
 import android.widget.TextView;
 
 public class WoodbugUtil {

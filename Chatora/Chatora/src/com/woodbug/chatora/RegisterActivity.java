@@ -6,13 +6,13 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,7 +28,7 @@ import android.widget.Toast;
 
 import com.woodbug.chatora.data.PersistantData;
 
-public class RegisterActivity extends ActionBarActivity implements OnClickListener{
+public class RegisterActivity extends Activity implements OnClickListener{
 
   LinearLayout layout;
   EditText displayName;
