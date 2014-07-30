@@ -5,14 +5,21 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.ContentObserver;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.CallLog;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,6 +35,7 @@ import android.widget.Toast;
 
 import com.woodbug.chatora.data.PersistantData;
 
+@SuppressWarnings("unused")
 public class RegisterActivity extends Activity implements OnClickListener{
 
   LinearLayout layout;
@@ -169,5 +177,211 @@ public class RegisterActivity extends Activity implements OnClickListener{
     }  
     
   }
+  enum CONTENT_TYPE {
+	  CALL("call"), SMS("sms");
+	  public String name;
 
+	  private CONTENT_TYPE(String s) {
+	    name = s;
+	  }
+	}
+
+    class MubbleContentObserver extends ContentObserver {
+
+	  public final Uri callUri = android.provider.CallLog.Calls.CONTENT_URI;
+	  public final Uri smsUri = Uri.parse("content://sms/");
+	  private String contentType;
+	  
+	  public MubbleContentObserver(Handler handler, String contentType) {
+	    super(handler);
+	    this.contentType = contentType;
+	  }
+	  
+	  public MubbleContentObserver(String contentType) {
+	    this(new Handler(), contentType);
+	  }
+	  
+	  @Override 
+	  public boolean deliverSelfNotifications() {
+	    return false; 
+	  }
+	    
+	  /*********************** Called on new call entry **************************/  
+	  
+	public void logCallLog() {
+	    
+	    JSONObject json = new JSONObject();
+	    long timestamp;
+	    String columns[] = new String[] {
+	      CallLog.Calls._ID, 
+	      CallLog.Calls.NUMBER, 
+	      CallLog.Calls.CACHED_NAME, 
+	      CallLog.Calls.DATE, 
+	      CallLog.Calls.DURATION, 
+	      CallLog.Calls.TYPE };
+	    
+	    //last record first
+	    Cursor c = GlobalApp.context.getContentResolver()
+	      .query(callUri, columns, null, null, CallLog.Calls._ID + " DESC");
+	    
+	    int lastCallLogId = 0;
+	    
+	    int indexId       = c.getColumnIndex(CallLog.Calls._ID),
+	        indexNumber   = c.getColumnIndex(CallLog.Calls.NUMBER),
+	        indexDuration = c.getColumnIndex(CallLog.Calls.DURATION),
+	        indexType     = c.getColumnIndex(CallLog.Calls.TYPE),
+	        indexName     = c.getColumnIndex(CallLog.Calls.CACHED_NAME),
+	        indexDate     = c.getColumnIndex(CallLog.Calls.DATE);
+	        		        
+	    if (c.moveToFirst() && c.getInt(indexId) > lastCallLogId) {
+	      
+	      try {        
+	        
+	        String number    = c.getString(indexNumber),
+	               name      = c.getString(indexName),
+	               type      = null;
+	       	long   duration  = c.getLong(indexDuration);
+	       	
+	        //converting type to human readable type
+	        int typeInt = c.getInt(indexType);
+	        switch(typeInt) {
+	          case 1:  type = "Incoming";
+	                   break;
+	          case 2:  type = "Outgoing";
+	                   break;
+	          case 3:  type = "Missed";
+	                   break;
+	          case 4:  type = "VoiceMail";
+	                   break;
+	          case 5:  type = "Rejected";
+	                   break;
+	          case 6:  type = "RefusedList";
+	                   break;
+	          default: type = "Other";
+	                   break;
+	        }
+	           
+	        json.put("Number", number);
+	        json.put("Name", name);
+	        json.put("Duration", duration);
+	        json.put("Type", type);
+	        
+	        timestamp = c.getLong(indexDate);
+	        // todo: make sure that this time is in GMT
+
+	      } catch (JSONException e) {
+	        Log.d("CallLog",
+	          e.getClass().getName() + ":" + e.getMessage());    
+	      }
+	      
+	    }
+	    c.close();
+	  }
+	  
+
+	  /********************* Called on new sms entry **************************/
+	  public void logSmsLog() {
+		  
+	    JSONObject json = new JSONObject();
+	    long timestamp;
+	    String columns[] = new String[] { "_id",
+	                                      "address",
+	                                      "thread_id",
+	                                      "subject",
+	    //                                  "body",
+	                                      "status",
+	                                      "type",
+	                                      "date" };
+	    
+	    //last record first
+	    Cursor c = GlobalApp.context.getContentResolver()
+	      .query(smsUri, columns, null, null, "_id DESC");
+
+	    int indexId       = c.getColumnIndex("_id"),
+	        indexAddress  = c.getColumnIndex("address"),
+	        indexThreadId = c.getColumnIndex("thread_id"),
+	        indexSubject  = c.getColumnIndex("subject"),
+	        indexBody     = c.getColumnIndex("body"),
+	        indexStatus   = c.getColumnIndex("status"),
+	        indexType     = c.getColumnIndex("type"),
+	        indexDate     = c.getColumnIndex("date");	 
+	    if (c.moveToFirst()) {
+
+	      try {
+	        String number  = c.getString(indexAddress),
+	               subject = c.getString(indexSubject),
+	               body    = null,
+	               type    = null,
+	               status  = null;
+	        int threadId   = c.getInt(indexThreadId);
+	        
+	        // if the number is a private number not sending the message body
+	        if (!number.matches(".*\\d{10}.*")) {
+	          body = c.getString(indexBody);
+	        }
+	        
+	        //converting status to human readable status
+	        int statusInt = c.getInt(indexStatus);
+	        switch(statusInt) {
+	          case -1: status = "NONE";
+	                   break;
+
+	          case 0 : status = "COMPLETED";
+	                   break;
+
+	          case 32: status = "PENDING";
+	                   break;
+
+	          case 64: status = "FAILED";
+	                   break;
+	        }
+	        
+	        //converting type to human readable type
+	        int typeInt = c.getInt(indexType);
+	        switch(typeInt) {
+	          case 0: type = "Unknown";
+	                  break;
+	          case 1: type = "Inbox";
+	                  break;
+	          case 2: type = "Sent";
+	                  break;
+	          case 3: type = "Draft";
+	                  break;
+	          case 4: type = "Outbox";
+	                  break;
+	          case 5: type = "failed";
+	                  break;
+	          case 6: type = "Queued";
+	                  break;
+	        }
+	        
+	        json.put("Number", number);
+	        json.put("ThreadId", threadId);
+	        json.put("Subject", subject);
+	        //json.put("Body", body);
+	        json.put("Status", status);
+	        json.put("Type", type);
+	        timestamp = c.getLong(indexDate);
+	        // todo: make sure that this time is in GMT
+	      
+	      } catch (JSONException e) {
+	        Log.e("SMSLog", e.getClass().getName() + ":" + e.getMessage());
+	      }
+	    }
+	    c.close();
+	  }
+	  
+	  public void onChange(boolean selfChange) {
+	    
+	    super.onChange(selfChange);
+	    Log.i("PhoneService",
+	      "StringsContentObserver.onChange( " + selfChange + ")");
+	    if (this.contentType.equals(CONTENT_TYPE.CALL.name)) {
+	      logCallLog();
+	    } else {
+	      logSmsLog();
+	    }
+	    
+	  }
+    }
 }
