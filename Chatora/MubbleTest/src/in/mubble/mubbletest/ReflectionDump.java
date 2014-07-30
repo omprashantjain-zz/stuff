@@ -1,8 +1,8 @@
 package in.mubble.mubbletest;
 
-import java.lang.reflect.Method;
+import in.mubble.util.core.ULog;
 
-import android.util.Log;
+import java.lang.reflect.Method;
 
 public class ReflectionDump {
 
@@ -75,7 +75,7 @@ public class ReflectionDump {
       }
       
     }
-    Log.i("Reached end", "aha");
+    ULog.i("Reached end", "aha");
     MubbleUtil.writeToFile("DualSim.txt", sb.toString());
   }
 }

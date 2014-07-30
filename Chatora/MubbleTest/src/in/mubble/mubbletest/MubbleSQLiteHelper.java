@@ -3,10 +3,10 @@
 
 package in.mubble.mubbletest;
 
+import in.mubble.util.core.ULog;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class MubbleSQLiteHelper extends SQLiteOpenHelper {
 
@@ -27,14 +27,14 @@ public class MubbleSQLiteHelper extends SQLiteOpenHelper {
 
   @Override
   public void onCreate(SQLiteDatabase database) {
-  Log.w(MubbleSQLiteHelper.class.getName(), "creating");
+  ULog.w(MubbleSQLiteHelper.class.getName(), "creating");
 		      
   }
 
   @Override
   public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     
-    Log.w(MubbleSQLiteHelper.class.getName(),
+    ULog.w(MubbleSQLiteHelper.class.getName(),
       "Upgrading database from version " + oldVersion + " to "
       + newVersion + ", which will destroy all old data");
     onCreate(db);

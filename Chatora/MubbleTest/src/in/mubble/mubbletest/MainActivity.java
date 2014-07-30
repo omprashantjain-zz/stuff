@@ -1,22 +1,20 @@
 package in.mubble.mubbletest;
 
 import in.mubble.callsmstojson.R;
+import in.mubble.util.MU;
 
 import org.json.JSONArray;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-public class MainActivity extends ActionBarActivity {
+@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+public class MainActivity extends Activity {
 
   public static Context context;
   Button start, stop;
@@ -29,20 +27,97 @@ public class MainActivity extends ActionBarActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     context = getApplicationContext();
-    
-    GSONTest test = new GSONTest("hahaha");
-    Gson gson     = new Gson();
+    text = (TextView) findViewById(R.id.textView1);
+    MU.init(getApplicationContext());
 
-    String json     = gson.toJson(test);
-    Log.e("json", json);
-    GSONTest result = gson.fromJson(json, GSONTest.class);
-    Log.e("result", result.toString());
-  
+    ReflectionDump.testForSingleSim(getSystemService(Context.TELEPHONY_SERVICE));
   }
+
 }
 
 
-/* text = (TextView) findViewById(R.id.textView1);
+/*
+      StringBuilder sb = new StringBuilder("DualSimGuru\n");
+    
+    sb.append("\nDualSim: "          + USimGuru.isDeviceDualSim());
+
+    sb.append("\nRoaming: "          + USimGuru.isRoaming(USimSlot.SINGLE));
+    sb.append("\nRoaming1: "         + USimGuru.isRoaming(USimSlot.FIRST));
+    sb.append("\nRoaming2: "         + USimGuru.isRoaming(USimSlot.SECOND));
+    
+    sb.append("\nSimSerial: "        + USimGuru.getSerial(USimSlot.SINGLE));
+    sb.append("\nSimSerialNumber1: " + USimGuru.getSerial(USimSlot.FIRST));
+    sb.append("\nSimSerialNumber2: " + USimGuru.getSerial(USimSlot.SECOND));
+    
+    sb.append("\nDataState: "        + USimGuru.getDataState(USimSlot.SINGLE));
+    sb.append("\nDataState1: "       + USimGuru.getDataState(USimSlot.FIRST));
+    sb.append("\nDataState2: "       + USimGuru.getDataState(USimSlot.SECOND));
+     
+    sb.append("\nDataActiveInSim: "  + USimGuru.getDataActiveSimSlot());
+    
+    sb.append("\nIMEI: "             + USimGuru.getImei(USimSlot.SINGLE));
+    sb.append("\nIMEI 1: "           + USimGuru.getImei(USimSlot.FIRST));
+    sb.append("\nIMEI 2: "           + USimGuru.getImei(USimSlot.SECOND));
+    
+    sb.append("\nRoaming: "          + USimGuru.isRoaming(USimSlot.SINGLE));
+    sb.append("\nRoaming1: "         + USimGuru.isRoaming(USimSlot.FIRST));
+    sb.append("\nRoaming2: "         + USimGuru.isRoaming(USimSlot.SECOND));
+
+
+    sb.append("\nNetworkOpr: "       + USimGuru.getNetworkOpr(USimSlot.SINGLE));
+    sb.append("\nNetworkOpr1: "      + USimGuru.getNetworkOpr(USimSlot.FIRST));
+    sb.append("\nNetworkOpr2: "      + USimGuru.getNetworkOpr(USimSlot.SECOND));
+
+    sb.append("\nSimOperator: "      + USimGuru.getSimOpr(USimSlot.SINGLE));
+    sb.append("\nSimOperator1: "     + USimGuru.getSimOpr(USimSlot.FIRST));
+    sb.append("\nSimOperator2: "     + USimGuru.getSimOpr(USimSlot.SECOND));
+    
+    text.setText(sb.toString());  
+    
+    TableDump.dumpTable(android.provider.CallULog.Calls.CONTENT_URI);
+  
+    ULog.v("hah", "a:" + USimGuru.isDeviceDualSim());
+    
+    ReflectionDump.testForSingleSim(USimGuru.getTelephonyManager());
+    ReflectionDump.testForDualSim(USimGuru.getTelephonyManager());
+    StringBuilder sb = new StringBuilder("DualSimGuru\n");
+
+    
+    text.setText(sb.toString());
+  public void initQualcommDoubleSim () {
+   try {
+   Class <?> cx = Class.forName ("android.telephony.MSimTelephonyManager");
+   Object obj = MU.context.getSystemService("phone_msim");
+   
+   Method mx = cx.getMethod ("getDeviceId", int.class);
+
+   ULog.v ("Objects", "" + cx + ":" + obj);
+   String serial1 = (String) mx.invoke (obj, 0),
+          serial2 = (String) mx.invoke (obj, 1);
+   ULog.v ("SerialNumbers", serial1 + ", " + serial2);
+   
+   
+   } catch (Exception e) {
+     ULog.v("SerialNumbers ", e.getMessage());
+     e.printStackTrace();
+   }
+ } 
+ 
+ ULog.v("This is the stupid text", UMisc.toMD5("This is the stupid text"));
+  
+    UCipher cipher = new UCipher("123456789");
+    String encrypted = cipher.encrypt("{png: \"this is it\"}");
+    String decrypted = cipher.decrypt(encrypted);
+
+  GSONTest test = new GSONTest("hahaha");
+    Gson gson     = new Gson();
+
+    String json     = gson.toJson(test);
+    ULog.v("json", json);
+    GSONTest result = gson.fromJson(json, GSONTest.class);
+    ULog.v("result", result.toString());
+  
+  text = (TextView) findViewById(R.id.textView1);
  StringBuilder sb = new StringBuilder("DualSimGuru\n");
  
  sb.append("\nSimSerialNumber1: " + DualSimGuru.getSerialSim1());
@@ -61,13 +136,13 @@ public class MainActivity extends ActionBarActivity {
    ReflectionDump.testForDualSim(clazz.newInstance());
    
  } catch (ClassNotFoundException e) {
-   Log.e("Exception", e.getMessage());
+   ULog.v("Exception", e.getMessage());
    e.printStackTrace();
  } catch (InstantiationException e) {
-   Log.e("Exception", e.getMessage());
+   ULog.v("Exception", e.getMessage());
    e.printStackTrace();
  } catch (IllegalAccessException e) {
-   Log.e("Exception", e.getMessage());
+   ULog.v("Exception", e.getMessage());
    e.printStackTrace();
  }*/
 
@@ -85,7 +160,7 @@ public class MainActivity extends ActionBarActivity {
     start.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        Log.e("DataMonitor", "Starting");
+        ULog.v("DataMonitor", "Starting");
         startMonitorDataUsage();
       }
     });
@@ -93,7 +168,7 @@ public class MainActivity extends ActionBarActivity {
     stop.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        Log.e("DataMonitor", "Stopping");
+        ULog.v("DataMonitor", "Stopping");
         stopMonitorDataUsage();
         MubbleUtil.writeToFile("AppWiseDataUsed.txt", allData.toString());
       }
@@ -142,10 +217,10 @@ public class MainActivity extends ActionBarActivity {
       Cursor c = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table';", null);  
       c.moveToFirst();
       while(!c.isAfterLast()) {
-        Log.i("tableName: ", c.getString(0));
+        ULog.i("tableName: ", c.getString(0));
         c.moveToNext();
       }
-      Log.i("Number of tables", "" + c.getCount());
+      ULog.i("Number of tables", "" + c.getCount());
     } catch (NameNotFoundException e1) {}
     
     // For dumping the table
@@ -161,19 +236,19 @@ public class MainActivity extends ActionBarActivity {
         
           for(Enumeration<InetAddress> inets = intf.getInetAddresses(); inets.hasMoreElements();){
             InetAddress inet = inets.nextElement();
-            Log.i("hello", "how are you" + inet.toString());
+            ULog.i("hello", "how are you" + inet.toString());
             //ReflectionDump.testForSingleSim(inet);
           }
-        Log.e("aa gaya", "tha");
+        ULog.v("aa gaya", "tha");
         for(Enumeration<NetworkInterface> inets = intf.getSubInterfaces(); inets.hasMoreElements();){
-          Log.e("andar", "tha");
+          ULog.v("andar", "tha");
           NetworkInterface inet = inets.nextElement();
           ReflectionDump.testForSingleSim(inet);
         }
         
-        Log.e("aa gaya", "tha");
+        ULog.v("aa gaya", "tha");
         for(InterfaceAddress inet : intf.getInterfaceAddresses()){
-          Log.e("andar", "tha");
+          ULog.v("andar", "tha");
           ReflectionDump.testForSingleSim(inet);
         }
         
@@ -192,7 +267,7 @@ public class MainActivity extends ActionBarActivity {
     initSpreadDoubleSim();
     TableDump.dumpTable(Uri.parse("content://sms/"));
     } catch(Exception e) {
-      Log.e("MainActivity", e.getMessage());
+      ULog.v("MainActivity", e.getMessage());
       Toast.makeText(getApplicationContext(), "Exception in main activity" + e.getMessage(),
         Toast.LENGTH_LONG).show();
     }

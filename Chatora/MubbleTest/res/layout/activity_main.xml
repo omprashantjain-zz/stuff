@@ -1,33 +1,21 @@
-<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     tools:context="in.mubble.mubbletest.MainActivity"
     tools:ignore="MergeRootFrame" >
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_x="38dp"
-        android:layout_y="33dp"
-        android:text="@string/start" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_x="194dp"
-        android:layout_y="38dp"
-        android:text="@string/stop" />
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="278dp"
-        android:layout_height="wrap_content"
-        android:layout_x="21dp"
-        android:layout_y="111dp"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-</AbsoluteLayout>
+</ScrollView>

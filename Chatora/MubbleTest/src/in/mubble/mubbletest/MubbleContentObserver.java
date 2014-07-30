@@ -1,12 +1,13 @@
 package in.mubble.mubbletest;
 
+import in.mubble.util.core.ULog;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.CallLog;
-import android.util.Log;
 
 public class MubbleContentObserver {
 
@@ -70,13 +71,13 @@ public class MubbleContentObserver {
         // todo: make sure that this time is in GMT
 
       } catch (JSONException e) {
-        Log.d("CallLog",
+        ULog.v("CallLog",
           e.getClass().getName() + ":" + e.getMessage());    
       }
       
       c.moveToNext();
     }
-    Log.e("CallLog", main.toString());
+    ULog.v("CallLog", main.toString());
     try {
       global.put("CallLog", main);
     } catch (JSONException e) {
@@ -87,7 +88,7 @@ public class MubbleContentObserver {
   
 
   /********************* Called on new sms entry **************************/
-  public void logSmsLog() {
+  public void logSmsULog() {
   
     JSONObject main = new JSONObject();
     
@@ -165,13 +166,13 @@ public class MubbleContentObserver {
         main.put("" + c.getLong(indexDate), json);
         
       } catch (JSONException e) {
-        Log.e("SMSLog", e.getClass().getName() + ":" + e.getMessage());
+        ULog.v("SMSULog", e.getClass().getName() + ":" + e.getMessage());
       }
       c.moveToNext();
     }  
-    Log.i("SmsLog", main.toString());
+    ULog.i("SmsULog", main.toString());
     try {
-      global.put("SmsLog", main);
+      global.put("SmsULog", main);
     } catch (JSONException e) {
       e.printStackTrace();
     }

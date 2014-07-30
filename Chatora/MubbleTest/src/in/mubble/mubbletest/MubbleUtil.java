@@ -1,5 +1,7 @@
 package in.mubble.mubbletest;
 
+import in.mubble.util.core.ULog;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,7 +19,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.net.TrafficStats;
 import android.os.Environment;
-import android.util.Log;
 
 public class MubbleUtil {
 
@@ -32,7 +33,7 @@ public class MubbleUtil {
       writer.append(text);
       writer.flush();
       writer.close();
-      Log.e("Write to file", sFileName + " : " + text);
+      ULog.v("Write to file", sFileName + " : " + text);
     }
     catch(IOException e) {
       e.printStackTrace();
@@ -79,7 +80,7 @@ public class MubbleUtil {
         }
   
       } catch (JSONException e) {
-        Log.e("Device::getInstalledApplicationsInfo",
+        ULog.v("Device::getInstalledApplicationsInfo",
           e.getClass().getName() + ":" + e.getMessage());
       }
     }
@@ -122,7 +123,7 @@ public class MubbleUtil {
       appInfo = pm.getApplicationInfo(packageName,
       PackageManager.GET_META_DATA);
     } catch (NameNotFoundException e) {
-      Log.d("MubbleUtil::getApplicationName", e.getClass().getName()
+      ULog.v("MubbleUtil::getApplicationName", e.getClass().getName()
         + ":" + e.getMessage());
     }
 
