@@ -134702,3 +134702,8 @@ keyval
 mcc
 mnc
 sim
+beamable
+isds
+ussd
+singelton
+ki
