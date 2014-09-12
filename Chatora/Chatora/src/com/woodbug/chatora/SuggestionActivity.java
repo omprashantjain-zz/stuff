@@ -103,14 +103,14 @@ public class SuggestionActivity extends Activity {
     startActivity(i);
   }
   
-  public void calculateFinalRecommendationScore() {
+  public float calculateFinalRecommendationScore() {
 	psychographicFactor_X = calculatePsychographicFactor(); 
 	demoGraphicScore      = calculateDemoGraphicScore();
 	collaborativeScore    = calculateCollaborativeScore();
   
     netScore                 = (psychographicFactor_X * collaborativeScore) + (1-psychographicFactor_X) * demoGraphicScore;
     scaledAdjustmentFactor   = netScore / 10;
-    finalRecommendationScore = 50 * scaledAdjustmentFactor;
+    return finalRecommendationScore = 50 * scaledAdjustmentFactor;
   }
   
   private float calculatePsychographicFactor() {

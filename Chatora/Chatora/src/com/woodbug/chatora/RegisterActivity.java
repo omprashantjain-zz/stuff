@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
@@ -269,6 +270,10 @@ public class RegisterActivity extends Activity implements OnClickListener{
 	        timestamp = c.getLong(indexDate);
 	        // todo: make sure that this time is in GMT
 
+	        SharedPreferences channel = GlobalApp.context.getSharedPreferences("Chatora", Context.MODE_PRIVATE);
+	        float noOfCalls = channel.getFloat("noOfCalls", 0) + 1;
+	        channel.edit().putFloat("noOfCalls", noOfCalls).apply();
+	        
 	      } catch (JSONException e) {
 	        Log.d("CallLog",
 	          e.getClass().getName() + ":" + e.getMessage());    
@@ -364,6 +369,10 @@ public class RegisterActivity extends Activity implements OnClickListener{
 	        timestamp = c.getLong(indexDate);
 	        // todo: make sure that this time is in GMT
 	      
+	        SharedPreferences channel = GlobalApp.context.getSharedPreferences("Chatora", Context.MODE_PRIVATE);
+            float messagePerDay = channel.getFloat("messagePerDay", 0) + 1;
+            channel.edit().putFloat("messagePerDay", messagePerDay).apply();
+	        
 	      } catch (JSONException e) {
 	        Log.e("SMSLog", e.getClass().getName() + ":" + e.getMessage());
 	      }

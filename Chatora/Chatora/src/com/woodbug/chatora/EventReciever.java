@@ -13,6 +13,9 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.TrafficStats;
 import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -23,13 +26,33 @@ import com.woodbug.chatora.data.PersistantData;
 
 public class EventReciever extends BroadcastReceiver {
 
+  long userPresent = 0;
+  
   @Override
   public void onReceive(Context context, Intent intent) {
     GlobalApp.init(context);
     Log.i("Done", "Generated");
     
-    if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
+    String action = intent.getAction();
+    
+    if (action.equals("android.intent.action.BOOT_COMPLETED")) {
       GlobalApp.setAlarm();
+    
+    } else if(action.equals(Intent.ACTION_SCREEN_OFF)) {
+      SharedPreferences channel = GlobalApp.context.getSharedPreferences("Chatora", Context.MODE_PRIVATE);
+      float screenMinutes = channel.getFloat("screenUsageMinutes", 0) 
+                           + (System.currentTimeMillis() - userPresent) / 60;
+      channel.edit().putFloat("screenUsageMinutes", screenMinutes).apply();
+      
+    } else if(action.equals(Intent.ACTION_USER_PRESENT)) {
+      userPresent = System.currentTimeMillis();
+    
+    } else if(action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+      SharedPreferences channel = GlobalApp.context.getSharedPreferences("Chatora", Context.MODE_PRIVATE);
+      float mobileInternetMB = channel.getFloat("mobileInternetMB", 0) 
+                           + (TrafficStats.getMobileRxBytes() + TrafficStats.getMobileTxBytes()) / (1024 * 1024);
+      channel.edit().putFloat("mobileInternetMB", mobileInternetMB).apply();
+    
     } else {
       new PlacesList().execute();	
     }

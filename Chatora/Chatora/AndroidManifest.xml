@@ -45,6 +45,7 @@
         <receiver android:name="EventReciever">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"></action>
             </intent-filter>
         </receiver>
         
