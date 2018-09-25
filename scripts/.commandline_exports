@@ -34,7 +34,10 @@ alias g=’git’
 # Amazon
 alias swipe='cd ~/workspaces/SWIPERTOL/src'
 alias stuff='cd ~/workspaces/stuff'
-alias webstack='cd ~/workspaces/SWIPERTOL/src/SWIPERTOLWebStack/src/'
+alias web='cd ~/workspaces/SWIPERTOL/src/SWIPERTOLWebStack/'
+alias weba='cd ~/workspaces/SWIPERTOL/src/SWIPERTOLWebStackAssets/'
+alias sivis='cd ~/workspaces/SWIPERTOL/src/SIVISFragment/'
+alias sivisa='cd ~/workspaces/SWIPERTOL/src/SIVISFragmentAssets/'
 alias clouddesk='ssh tensor-clouddesk.aka.corp.amazon.com'
 alias developerdesk='ssh tensor.corp.amazon.com'
 
