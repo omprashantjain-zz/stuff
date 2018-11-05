@@ -38,7 +38,6 @@ alias web='cd ~/workspaces/SWIPERTOL/src/SWIPERTOLWebStack/'
 alias weba='cd ~/workspaces/SWIPERTOL/src/SWIPERTOLWebStackAssets/'
 alias sivis='cd ~/workspaces/SWIPERTOL/src/SIVISFragment/'
 alias sivisa='cd ~/workspaces/SWIPERTOL/src/SIVISFragmentAssets/'
-alias clouddesk='ssh tensor-clouddesk.aka.corp.amazon.com'
 alias developerdesk='ssh tensor.corp.amazon.com'
 alias gamma='mwinit && ssh swipe-master-eu-1b-f656a18d.eu-west-1.amazon.com'
 

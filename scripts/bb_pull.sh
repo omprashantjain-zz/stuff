@@ -1,5 +1,5 @@
 cd ~/workspaces/SWIPERTOL/src/REGSWIPEFragments
-for pkg in  KycBusinessTypeFragment KycBusinessTypeFragmentAsset REGSWIPEFragments REGSWIPEFragmentsAssets SWIPEDocumentOCRFragment SWIPEDocumentOCRFragmentAssets KycEntityFragment KycEntityFragmentAssets SIVISFragment SIVISFragmentAssets SWIPERTOLLayouts SWIPERTOLWebStackAssets SWIPERTOLEndPointConfig SWIPERTOLWebStack; do
+for pkg in  KycBusinessTypeFragment KycBusinessTypeFragmentAsset REGSWIPEFragments REGSWIPEFragmentsAssets SWIPEDocumentOCRFragment SWIPEDocumentOCRFragmentAssets SIVISFragment SIVISFragmentAssets SWIPERTOLLayouts SWIPERTOLWebStackAssets SWIPERTOLEndPointConfig SWIPERTOLWebStack; do
   cd ../${pkg}
   if git diff-index --quiet HEAD --; then
     git pull;
