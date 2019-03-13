@@ -32,6 +32,7 @@ alias g=’git’
 #alias all=’git add .’
 
 # Amazon
+alias mossy=/apollo/env/Mossy/bin/mossy
 alias swipe='cd ~/workspaces/SWIPERTOL/src'
 alias stuff='cd ~/workspaces/stuff'
 alias web='cd ~/workspaces/SWIPERTOL/src/SWIPERTOLWebStack/'
