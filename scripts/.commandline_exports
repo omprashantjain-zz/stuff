@@ -33,6 +33,7 @@ alias g=’git’
 
 #KnowledgeGate
 alias kgdesk='ssh -i ~/knowledgegate.pem ubuntu@ec2-18-222-173-255.us-east-2.compute.amazonaws.com'
+alias kg='cd ~/workspaces/knowledgegatewebsite/'
 
 # Amazon
 alias mossy=/apollo/env/Mossy/bin/mossy
