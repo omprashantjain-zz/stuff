@@ -36,6 +36,7 @@ alias kgdesk='ssh -i ~/knowledgegate.pem ubuntu@ec2-18-222-173-255.us-east-2.com
 alias kg='cd ~/workspaces/knowledgegatewebsite/'
 
 # Amazon
+alias bb_aaa='sh ~/scripts/aaa_fix_script.sh'
 alias mossy=/apollo/env/Mossy/bin/mossy
 alias swipe='cd ~/workspaces/SWIPERTOL/src'
 alias stuff='cd ~/workspaces/stuff'
@@ -43,17 +44,19 @@ alias web='cd ~/workspaces/SWIPERTOL/src/SWIPERTOLWebStack/'
 alias weba='cd ~/workspaces/SWIPERTOL/src/SWIPERTOLWebStackAssets/'
 alias sivis='cd ~/workspaces/SWIPERTOL/src/SIVISFragment/'
 alias sivisa='cd ~/workspaces/SWIPERTOL/src/SIVISFragmentAssets/'
+alias score='cd ~/workspaces/score/src/SCOREService/'
+alias sivis='cd ~/workspaces/SIVISService/src/SIVISService/'
+alias grex='cd ~/workspaces/GREX/src/GREXSWIPEWebStack/'
+alias grexa='cd ~/workspaces/GREX/src/GREXSWIPEWebStackAssets/'
+alias workspaces='cd ~/workspaces/'
 alias developerdesk='ssh tensor.corp.amazon.com'
-alias gamma='mwinit && ssh swipe-master-eu-1b-f656a18d.eu-west-1.amazon.com'
 
 alias nds='ninja-dev-sync'
 alias debug_tunnel='ssh -T -N -L 9001:localhost:9001 tensor.corp.amazon.com'
 
 alias bb='brazil-build'
 alias bb_server='sh ~/scripts/bb_server.sh'
-alias bb_pull='sh ~/scripts/bb_pull.sh'
 alias bb_build='sh ~/scripts/bb_build.sh'
 alias bb_dev_watch='sh ~/scripts/bb_dev_watch.sh'
 alias bb_clean='sh ~/scripts/bb_clean.sh'
 alias bb_kill='sudo kill `sudo lsof -t -i:9443`'
-alias sync_version_set='brazil workspace sync -md'
