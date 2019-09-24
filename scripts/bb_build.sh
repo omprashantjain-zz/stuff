@@ -1,2 +1,2 @@
 brazil workspace --sync --metadata
-brazil-recursive-cmd brazil-build
+brazil-recursive-cmd brazil-build build
