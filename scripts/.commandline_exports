@@ -1,3 +1,5 @@
+export PATH="$PATH:/apollo/env/OctaneBrazilTools/bin"
+
 # Common commands
 alias q=’exit’
 alias c=’clear’
