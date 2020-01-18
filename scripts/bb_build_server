@@ -1,4 +1,4 @@
-cd ~/workspaces/SWIPERTOL/src/SWIPERTOLWebStack
+cd ~/workspaces/IVXWebAppService/src/IVXWebAppService
 brazil workspace --sync --metadata
 brazil-recursive-cmd brazil-build
-/apollo/bin/env -e SWIPERTOL brazil-build server
+/apollo/bin/env -e IVXWebAppService brazil-build server
