@@ -41,8 +41,11 @@ alias kg='cd ~/workspaces/knowledgegatewebsite/'
 alias bb_aaa='sh ~/scripts/aaa_fix_script.sh'
 alias mossy=/apollo/env/Mossy/bin/mossy
 alias stuff='cd ~/workspaces/stuff'
-alias web='cd ~/workspaces/IVXWebAppService/src/'
-alias weba='cd ~/workspaces/IVXWebAppAssets/src/'
+alias gateway='cd ~/workspaces/IdGateway/IdGatewayService/src'
+alias service='cd ~/workspaces/IdGateway/IdGatewayService/src/IdGatewayService'
+alias rde_port='ssh -L 8081:localhost:1080 dev-dsk-tensor-1c-32e7e2d2.eu-west-1.amazon.com -N'
+alias rde_logs='cd ~/workspaces/IdGateway/IdGatewayService/src/IdGatewayService/mounts/logs/service'
+
 
 alias workspaces='cd ~/workspaces/'
 alias developerdesk='ssh tensor.corp.amazon.com'
